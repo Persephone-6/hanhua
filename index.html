@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>个人汉化站 | 作品集</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: #f5f5f0;
+            font-family: -apple-system, 'Helvetica Neue', 'Noto Sans', 'Segoe UI', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            padding: 0;
+            color: #333;
+        }
+
+        img {
+            pointer-events: auto;
+            -webkit-user-drag: none;
+            user-drag: none;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        .app-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            background: #f5f5f0;
+            min-height: 100vh;
+        }
+
+        .site-header {
+            background: #fff;
+            border-bottom: 1px solid #e0ddd5;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .site-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #555;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.75rem;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #333;
+        }
+
+        .main-content {
+            padding: 0 32px 32px 32px;
+        }
+
+        .list-view { display: block; }
+        .list-view.hide { display: none; }
+        .detail-view { display: none; background: #fff; border: 1px solid #e8e5dd; }
+        .detail-view.active { display: block; }
+        .author-view { display: none; background: #fff; border: 1px solid #e8e5dd; }
+        .author-view.active { display: block; }
+        .tag-view { display: none; background: #fff; border: 1px solid #e8e5dd; }
+        .tag-view.active { display: block; }
+
+        /* ========== 个人主页头部（完全居中） ========== */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* 背景图区域 */
+        .profile-cover {
+            height: 330px;
+           background-image: url('https://r2.image-upload.app/tyImg/1nUDRFGT.jpg');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        /* 头像容器 - 居中，与背景重叠 */
+        .avatar-wrapper {
+            margin-top: -50px;
+            margin-bottom: 12px;
+        }
+
+        .avatar-wrapper img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            background: white;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+
+        /* 用户信息区域 - 居中 */
+        .profile-info {
+            text-align: center;
+        }
+
+        .profile-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .profile-bio {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #888;
+            margin-bottom: 12px;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .profile-website {
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+
+        .profile-website span {
+            font-weight: 500;
+            color: #888;
+        }
+
+        /* 筛选栏 - 直角框 */
+        .filter-section {
+            background: #fff;
+            padding: 20px 24px;
+            margin-bottom: 28px;
+            border: 1px solid #e8e5dd;
+        }
+
+        .search-combo {
+            display: flex;
+            margin-bottom: 20px;
+            border: 1px solid #ddd8cf;
+            background: #fff;
+            overflow: hidden;
+        }
+
+        .search-combo:focus-within {
+            border-color: #4a6a5e;
+            box-shadow: 0 0 0 2px rgba(74, 106, 94, 0.1);
+        }
+
+        .search-type-select {
+            flex-shrink: 0;
+            padding: 12px 16px;
+            font-size: 0.8rem;
+            border: none;
+            background: transparent;
+            color: #555;
+            cursor: pointer;
+            outline: none;
+            border-right: 1px solid #ddd8cf;
+            font-weight: 400;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .search-input {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .search-input input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            border: none;
+            outline: none;
+            background: transparent;
+        }
+
+        .search-input input::placeholder {
+            color: #bbb;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: flex-end;
+        }
+
+        .filter-item {
+            min-width: 110px;
+        }
+
+        .filter-item label {
+            display: block;
+            font-size: 0.6rem;
+            color: #aaa;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-item select {
+            width: 100%;
+            padding: 8px 0;
+            font-size: 0.75rem;
+            border: none;
+            border-bottom: 1px solid #ddd8cf;
+            background: transparent;
+            outline: none;
+            color: #555;
+        }
+
+        .reset-btn {
+            background: none;
+            border: 1px solid #ddd8cf;
+            padding: 8px 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            color: #888;
+            transition: all 0.2s;
+        }
+
+        .reset-btn:hover {
+            background: #f0ede7;
+            color: #555;
+        }
+
+        /* 作品区域分隔 */
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 32px 0 20px 0;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e8e5dd;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #4a6a5e;
+        }
+
+        .section-count {
+            font-size: 0.7rem;
+            color: #aaa;
+        }
+
+        /* 收缩框样式 - 直角 */
+        .collapsible-section {
+            margin-top: 8px;
+        }
+
+        .collapsible-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 16px 20px;
+            background: #fff;
+            border: 1px solid #e8e5dd;
+            transition: background 0.2s;
+        }
+
+        .collapsible-header:hover {
+            background: #faf9f7;
+        }
+
+        .collapsible-header .section-title {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        .collapsible-header .toggle-icon {
+            font-size: 0.8rem;
+            color: #aaa;
+            transition: transform 0.2s;
+        }
+
+        .collapsible-header .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .collapsible-content.open {
+            max-height: 5000px;
+            transition: max-height 0.5s ease-in;
+        }
+
+        .content-inner {
+            padding: 20px 0 10px 0;
+        }
+
+        /* 作品网格 */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 24px;
+        }
+
+        .work-card {
+            background: #fff;
+            border: 1px solid #e8e5dd;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+
+        .work-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .cover {
+            width: 100%;
+            aspect-ratio: 2 / 2.8;
+            object-fit: cover;
+            background: #f0ede7;
+            -webkit-user-drag: none;
+            user-drag: none;
+            pointer-events: none;
+        }
+
+        .card-content {
+            padding: 12px 12px 16px;
+        }
+
+        .work-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .author-name {
+            font-size: 0.65rem;
+            color: #888;
+            margin: 0 0 6px 0;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .author-name:hover {
+            color: #555;
+            text-decoration: underline;
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 4px 0 0;
+        }
+
+        .custom-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 0.6rem;
+            font-weight: 500;
+            background: #e8e5dd;
+            color: #555;
+            transition: transform 0.1s, opacity 0.2s;
+            cursor: pointer;
+        }
+
+        .custom-tag:hover {
+            transform: scale(1.02);
+            opacity: 0.9;
+        }
+
+        /* 进度条样式 */
+        .progress-container {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-bar-bg {
+            flex: 1;
+            background-color: #e8e5dd;
+            height: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            background-color: #4a6a5e;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.6rem;
+            color: #888;
+            min-width: 35px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #aaa;
+            font-size: 0.8rem;
+            background: #fff;
+            border: 1px solid #e8e5dd;
+        }
+
+        /* 标签页头部样式 - 直角 */
+        .tag-header {
+            padding: 32px 28px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: cover;
+            background-position: center;
+            margin-bottom: 24px;
+        }
+
+        .tag-header-content {
+            max-width: 100%;
+        }
+
+        .tag-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .tag-count {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.85);
+        }
+
+        /* 作者页面 - 直角 */
+        .author-header {
+            padding: 24px 28px;
+            border-bottom: 1px solid #e8e5dd;
+            background: #faf9f7;
+        }
+
+        .author-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #444;
+            margin-bottom: 8px;
+        }
+
+        .author-header p {
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .author-works-title {
+            padding: 20px 28px 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 1px solid #e8e5dd;
+        }
+
+        .author-gallery {
+            padding: 20px 28px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+        }
+
+        /* 详情页两栏 - 直角 */
+        .detail-layout {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .detail-left {
+            flex: 1.2;
+            min-width: 280px;
+            background: #faf9f7;
+            padding: 28px;
+            border-right: 1px solid #e8e5dd;
+        }
+
+        .main-image {
+            width: 100%;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .main-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+
+        .thumb-list {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .thumb-item {
+            width: 70px;
+            cursor: pointer;
+            border: 1px solid #e0ddd5;
+            position: relative;
+        }
+
+        .thumb-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            -webkit-user-drag: none;
+            user-drag: none;
+        }
+
+        .thumb-item.active {
+            border-color: #aaa;
+        }
+
+        .detail-right {
+            flex: 1.8;
+            min-width: 300px;
+            padding: 28px 32px;
+        }
+
+        .detail-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c2c2c;
+            margin-bottom: 16px;
+        }
+
+        /* Poipiku 区域 - 横细线样式，按钮在右边 */
+        .poipiku-section {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 16px;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e8e5dd;
+        }
+
+        .poipiku-pwd {
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 0.3px;
+        }
+
+        .poipiku-pwd strong {
+            color: #4a6a5e;
+            font-weight: 600;
+        }
+
+        .poipiku-btn-large {
+            display: inline-block;
+            background: #4a6a5e;
+            color: white;
+            padding: 8px 24px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            box-shadow: none;
+            border: none;
+        }
+
+        .poipiku-btn-large:hover {
+            background: #2f4a41;
+        }
+
+        .detail-author-link {
+            margin-bottom: 24px;
+        }
+
+        .detail-author-link a {
+            color: #777;
+            text-decoration: none;
+            font-size: 0.75rem;
+            border-bottom: 1px solid #ddd8cf;
+            cursor: pointer;
+        }
+
+        .detail-author-link a:hover {
+            color: #444;
+        }
+
+        .info-block {
+            margin-bottom: 28px;
+        }
+
+        .info-block-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #999;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e8e5dd;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px 20px;
+        }
+
+        .info-row {
+            display: flex;
+            font-size: 0.75rem;
+        }
+
+        .info-label {
+            width: 80px;
+            color: #999;
+        }
+
+        .info-value {
+            color: #555;
+        }
+
+        .public-badge {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 2px 8px;
+            font-size: 0.65rem;
+        }
+
+        .private-badge {
+            background: #ffebee;
+            color: #c62828;
+            padding: 2px 8px;
+            font-size: 0.65rem;
+        }
+
+        .description-text {
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: #666;
+            white-space: pre-wrap;
+        }
+
+        /* 工作记录样式 */
+        .work-record-text {
+            background: #faf9f7;
+            padding: 16px;
+            font-size: 0.75rem;
+            line-height: 1.6;
+            color: #666;
+            white-space: pre-wrap;
+        }
+
+        /* ========== Repo 收缩框样式 ========== */
+        .repo-collapsible {
+            border: 1px solid #e8e5dd;
+            margin-bottom: 28px;
+        }
+
+        .repo-header {
+            background: #faf9f7;
+            padding: 12px 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #666;
+            transition: background 0.2s;
+        }
+
+        .repo-header:hover {
+            background: #f0ede7;
+        }
+
+        .repo-header .toggle-icon {
+            font-size: 0.7rem;
+            transition: transform 0.2s;
+        }
+
+        .repo-header .toggle-icon.open {
+            transform: rotate(180deg);
+        }
+
+        .repo-content {
+            padding: 16px;
+            background: #fff;
+            border-top: 1px solid #e8e5dd;
+            display: none;
+        }
+
+        .repo-content.open {
+            display: block;
+        }
+
+        /* 图文混排样式 */
+        .repo-text {
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: #555;
+            white-space: pre-wrap;
+            margin-bottom: 16px;
+        }
+
+        .repo-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .repo-img {
+            cursor: pointer;
+            border: 1px solid #e8e5dd;
+            transition: transform 0.2s;
+        }
+
+        .repo-img:hover {
+            transform: scale(1.02);
+        }
+
+        .repo-img img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .repo-img-caption {
+            font-size: 0.65rem;
+            color: #888;
+            padding: 6px 8px;
+            text-align: center;
+            background: #faf9f7;
+        }
+
+        hr {
+            margin: 24px 0;
+            border: none;
+            border-top: 1px solid #e8e5dd;
+        }
+
+        .footer-note {
+            font-size: 0.6rem;
+            color: #bbb;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 48px;
+            padding: 24px 0;
+            color: #ccc;
+            font-size: 0.6rem;
+            border-top: 1px solid #e8e5dd;
+        }
+
+        .nav-back {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e8e5dd;
+        }
+
+        .back-link {
+            color: #888;
+            font-size: 0.75rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .back-link:hover {
+            color: #555;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active { display: flex; }
+        .lightbox-img { 
+            max-width: 90%; 
+            max-height: 85%; 
+            object-fit: contain;
+            -webkit-user-drag: none;
+            user-drag: none;
+            pointer-events: none;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        @media (max-width: 800px) {
+            .detail-layout { flex-direction: column; }
+            .detail-left { border-right: none; border-bottom: 1px solid #e8e5dd; }
+            .main-content { padding: 0 20px 20px 20px; }
+            .site-header { padding: 12px 20px; }
+            .gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
+            .author-gallery { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); padding: 16px; }
+            .card-content { padding: 10px 10px 14px; }
+            .work-title { font-size: 0.75rem; margin-bottom: 6px; }
+            .info-label { width: 70px; }
+            .profile-cover { height: 120px; }
+            .avatar-wrapper { margin-top: -40px; }
+            .avatar-wrapper img { width: 70px; height: 70px; }
+            .profile-name { font-size: 1.1rem; }
+            .profile-bio { font-size: 0.75rem; }
+            .search-type-select { padding: 10px 12px; font-size: 0.7rem; }
+            .search-input input { padding: 10px 12px; }
+            .poipiku-section { flex-direction: column; align-items: stretch; gap: 12px; }
+            .poipiku-btn-large { text-align: center; }
+            .section-divider { margin: 24px 0 16px 0; }
+            .tag-name { font-size: 1.6rem; }
+            .tag-header { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="site-header">
+        <div class="logo-area" id="homeLogo">
+            <span class="site-title">个人同人本记录兼汉化汇总</span>
+        </div>
+        <div class="nav-links">
+            <a id="homeLink">作品一览</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div id="listView" class="list-view">
+            <!-- 个人主页头部 - 完全居中 -->
+            <div class="profile-header">
+                <div class="profile-cover"></div>
+                <div class="avatar-wrapper">
+                    <img src="https://r2.image-upload.app/tyImg/vodqEPuq.jpg" alt="头像" draggable="false">
+                </div>
+                <div class="profile-info">
+                    <div class="profile-name">众从人</div>
+                    <div class="profile-bio">各种性向混发，请善用筛选。</div>
+                    <div class="profile-website">本站所有汉化都是无授权，仅供同好交流试阅。请勿二改二传。侵删。</div>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <div class="search-combo">
+                    <select id="searchType" class="search-type-select">
+                        <option value="title">刊名</option>
+                        <option value="cp">CP名</option>
+                        <option value="author">作者</option>
+                        <option value="ip">IP</option>
+                    </select>
+                    <div class="search-input">
+                        <input type="text" id="searchInput" placeholder="输入关键词...">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <div class="filter-item"><label>语言</label><select id="filterLang"><option value="all">全部</option></select></div>
+                    <div class="filter-item"><label>作品IP</label><select id="filterIP"><option value="all">全部</option></select></div>
+                    <div class="filter-item"><label>CP</label><select id="filterCP"><option value="all">全部</option></select></div>
+                    <div class="filter-item"><button class="reset-btn" id="resetBtn">重置筛选</button></div>
+                </div>
+            </div>
+
+            <!-- 第一类：汉化作品 -->
+            <div class="section-divider">
+                <span class="section-title">汉化作品</span>
+                <span class="section-count" id="translatedCount">共 0 件</span>
+            </div>
+            <div id="translatedGallery" class="gallery"></div>
+
+            <!-- 第二类：汉化计划表 -->
+            <div class="section-divider">
+                <span class="section-title">施工中🚧（并不实时更新）</span>
+                <span class="section-count" id="planCount">共 0 件</span>
+            </div>
+            <div id="planGallery" class="gallery"></div>
+
+            <!-- 第三类：个人同人本阅读收录 -->
+            <div class="collapsible-section">
+                <div class="collapsible-header" id="personalCollapseHeader">
+                    <span class="section-title">个人同人本阅读收录（持续录入中）</span>
+                    <span class="toggle-icon" id="personalToggleIcon">▼</span>
+                </div>
+                <div class="collapsible-content" id="personalCollapseContent">
+                    <div class="content-inner">
+                        <div id="personalGallery" class="gallery"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">© 个人无授权汉化 · 所有版权归原作者所有。侵删。请勿二传二改。</div>
+        </div>
+
+        <div id="authorView" class="author-view">
+            <div class="nav-back">
+                <span class="back-link" id="backFromAuthorBtn">← 返回作品一览</span>
+            </div>
+            <div id="authorContent"></div>
+        </div>
+
+        <div id="tagView" class="tag-view">
+            <div class="nav-back">
+                <span class="back-link" id="backFromTagBtn">← 返回作品一览</span>
+            </div>
+            <div id="tagContent"></div>
+        </div>
+
+        <div id="detailView" class="detail-view">
+            <div class="nav-back">
+                <span class="back-link" id="backToListBtn">← 返回作品一览</span>
+            </div>
+            <div id="detailContent"></div>
+        </div>
+    </div>
+</div>
+
+<div id="lightbox" class="lightbox">
+    <button class="lightbox-close" id="lightboxClose">✕</button>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" draggable="false">
+</div>
+
+<script>
+    // ========================
+    // 图片保护
+    // ========================
+    document.addEventListener('contextmenu', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+            return false;
+        }
+    });
+    document.addEventListener('dragstart', function(e) {
+        if (e.target.tagName === 'IMG') {
+            e.preventDefault();
+            return false;
+        }
+    });
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 's') { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.key === 'p') { e.preventDefault(); return false; }
+        if (e.key === 'F12') { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.shiftKey && e.key === 'I') { e.preventDefault(); return false; }
+        if (e.ctrlKey && e.key === 'u') { e.preventDefault(); return false; }
+    });
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                if (node.nodeType === 1) {
+                    const imgs = node.querySelectorAll ? node.querySelectorAll('img') : [];
+                    imgs.forEach(img => {
+                        img.setAttribute('draggable', 'false');
+                        img.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+                    });
+                    if (node.tagName === 'IMG') {
+                        node.setAttribute('draggable', 'false');
+                        node.addEventListener('contextmenu', function(e) { e.preventDefault(); });
+                    }
+                }
+            });
+        });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // ========================
+    // 作品数据
+    // ========================
+    let translatedWorks = [
+        {
+            id: "なべとフライパン",
+            cover: "https://r2.image-upload.app/ptImg/GyUtFAKm.jpg",
+            title: "なべとフライパン",
+            lang: "日文",
+            ip: "fgo",
+            cp: "伯爵咕哒♀",
+            pageCount: "B5/35p",
+            authorId: "author_a",
+            authorName: "nap",
+            shopUrl: "", 
+            description: "收录了五篇故事的短集篇（包含恶搞世界线） \n两个男人一直在吵架。只有一点恋爱要素。",
+            poipikuUrl: "https://poipiku.com/8968386/13057782.html",
+            poipikuPwd: "第三个故事封面（15p）的第一个英文单词（不用大写）",
+            weight: "121g",
+            previewImages: ["https://r2.image-upload.app/ptImg/GyUtFAKm.jpg","https://r2.image-upload.app/ptImg/m9Ay2l0s.jpg","https://r2.image-upload.app/ptImg/3J0egk2L.jpg","https://r2.image-upload.app/ptImg/AUs2U3fW.jpg","https://r2.image-upload.app/ptImg/4ngt4sqK.jpg","https://r2.image-upload.app/ptImg/hNssUNcu.jpg"],
+            tags: [
+                { text: "fgo", color: "#E0E0E0", textColor: "#424242" },
+                { text: "伯爵咕哒♀", color: "#FFE0B2", textColor: "#EF6C00" },
+            ],
+            isPublic: false,
+            authorIdDisplay: "12345678 / @author",
+            // 示例 Repo 数据
+            repo: {
+                text: "无",
+            }
+        },
+        {
+            id: "きみのぜんぶがぼくのもの",
+            cover: "https://r2.image-upload.app/ptImg/v7gF5EQI.jpg",
+            title: "きみのぜんぶがぼくのもの",
+            lang: "日文",
+            ip: "扭曲仙境",
+            cp: "idia监♀/梦",
+            pageCount: "30p",
+            authorId: "author_b",
+            authorName: "noa/弓削リカコ",
+            shopUrl: "https://ecs.toranoana.jp/joshi/ec/item/040031299730/",
+            description: "科幻题材的长篇连载。",
+            poipikuUrl: "https://poipiku.com/8968386/13057792.html",
+            poipikuPwd: "倒数第6p作者二维码下方汉字的拼音",
+            weight: "93g",
+            previewImages: ["https://r2.image-upload.app/ptImg/v7gF5EQI.jpg","https://r2.image-upload.app/ptImg/sFWODBh1.jpg","https://r2.image-upload.app/ptImg/oM5GKFnm.jpg","https://r2.image-upload.app/ptImg/68QXM7J3.jpg","https://r2.image-upload.app/ptImg/1RZwohs9.jpg","https://r2.image-upload.app/ptImg/haPLjmzv.jpg","https://r2.image-upload.app/ptImg/13kAMdbZV.jpg"],
+            tags: [
+                { text: "扭曲仙境", color: "#E8EAF6", textColor: "#283593" },
+                { text: "idia监♀/梦", color: "#90CAF9", textColor: "#1A237E" },
+            ],
+            isPublic: false,
+            authorIdDisplay: "",
+            repo:{
+                text:"无"
+            }
+        },
+        {
+            id: "兄弟つれづれ遊び事１　金秋の鬼",
+            cover: "https://r2.image-upload.app/ptImg/wR9lc7HN.jpg",
+            title: "兄弟つれづれ遊び事１　金秋の鬼",
+            lang: "日文",
+            ip: "刀剑乱舞",
+            cp: "髭膝",
+            pageCount: "B5/32p",
+            authorName: "ZORRO/わたり沖常",
+            shopUrl: "https://ecs.toranoana.jp/joshi/ec/item/040030589797/", 
+            description: "源氏兄弟和妖怪的故事。cp要素少。\n\n[那個的氣息、是不是越來越靠近了？]\n[在說什麼呢 不要說奇怪的話哦]\n\n明明髭切也意識到了卻裝作不知道的【那個】。\n膝丸卻是在意的不得了、\n即使那個出現在眼前，髭切也依舊說[不在]，把那個當做不存在的事物對待…。",
+            poipikuUrl: "https://poipiku.com/8968386/13057782.html",
+            poipikuPwd: "15p膝丸说的： _姬，空格中字的拼音",
+            weight: "",
+            previewImages: ["https://r2.image-upload.app/ptImg/wR9lc7HN.jpg","https://r2.image-upload.app/ptImg/CyEsRdZ1.png","https://r2.image-upload.app/ptImg/mpagalQ2.png","https://r2.image-upload.app/ptImg/OO5QZze2.png","https://r2.image-upload.app/ptImg/NWpxmjPu.png","https://r2.image-upload.app/ptImg/dXQ14USv.png","https://r2.image-upload.app/ptImg/OWp2ZLza.png"],
+            tags: [
+                { text: "刀剑乱舞", color: "#FFF0F5", textColor: "#D81B60" },
+                { text: "髭膝", color: "#424242", textColor: "#FFFFFF" },
+            ],
+            isPublic: true,
+            authorIdDisplay: "pid=2036363",
+            // 示例 Repo 数据
+            repo: {
+                images:[
+                    {url:"https://r2.image-upload.app/ptImg/Kmxc6Eoy.png" },
+                    {url:"https://r2.image-upload.app/ptImg/QYxQPXAl.png"},
+                    {url:"https://r2.image-upload.app/ptImg/1eA0mYKFB.png"}
+                ]
+                
+            }
+            
+        },
+        
+    ];
+
+    let planWorks = [
+        {
+            id: "plan1",
+            cover: "https://r2.image-upload.app/ptImg/lPi36mSG.jpg",
+            title: "星を送る男",
+            lang: "日文",
+            ip: "fgo",
+            cp: "伯爵咕哒♂",
+            pageCount: "A5/52P",
+            authorId: "author_plan",
+            authorName: "臓物オムライス/もつに",
+            shopUrl: "https://ecs.toranoana.jp/joshi/ec/item/040031174483/", 
+            description: "",
+            weight: "97",
+            previewImages: ["https://r2.image-upload.app/ptImg/lPi36mSG.jpg"],
+            tags:[
+                { text: "fgo", color: "#E0E0E0", textColor: "#424242" },
+                { text: "伯爵咕哒♂", color: "#E1F5FE", textColor: "#0277BD" },
+            ],
+            isPublic: false,
+            authorIdDisplay: "",
+            progress: 44,
+            workRecord: "【施工记录】\n2026-04-05: 项目启动\n2026-04-6: 翻译完成18/52\n2026-06-14: 完成24/52"
+        },
+        {
+            id: "plan2",
+            cover: "https://r2.image-upload.app/ptImg/b0aeAxhX.jpg",
+            title: "いっぱい知りたい！小さなキミたち",
+            lang: "日文",
+            ip: "扭曲仙境",
+            cp: "冥兄弟中心向无cp",
+            pageCount: "B5/36P",
+            authorId: "author_plan",
+            authorName: "ストレンジ01/犬丸アカギ",
+            shopUrl: "https://ecs.toranoana.jp/joshi/ec/item/040031193649/", 
+            description: "",
+            weight: "",
+            previewImages: ["https://r2.image-upload.app/ptImg/b0aeAxhX.jpg","https://r2.image-upload.app/ptImg/8NemzCN8.jpg","https://r2.image-upload.app/ptImg/gDgiPij6.jpg","https://r2.image-upload.app/ptImg/dFy26z4j.jpg","https://r2.image-upload.app/ptImg/Ocn9xcpE.jpg","https://r2.image-upload.app/ptImg/fHeYveou.jpg","https://r2.image-upload.app/ptImg/zbSKbdKG.jpg"],
+            tags: [{ text: "扭曲仙境", color: "#E8EAF6", textColor: "#283593" },
+                { text: "冥兄弟中心", color: "#90CAF9", textColor: "#1A237E" },
+                { text: "无cp", color: "#EEEEEE", textColor: "#424242" }],
+            isPublic: false,
+            authorIdDisplay: "",
+            progress: 17,
+            workRecord: "【工作记录】\n2026-03-09: 项目启动\n2026-03-18: 完成试阅页翻译"
+        }
+    ];
+
+    let personalWorks = [
+        {
+            id: "personal1",
+            cover: "https://r2.image-upload.app/ptImg/174A8ESUK.jpg",
+            title: "さがす残り香 手には星 ",
+            lang: "日文",
+            ip: "fgo",
+            cp: "伯爵咕哒♂",
+            pageCount: "A5/38P",
+            authorName: "hole fall/滝",
+            shopUrl: "https://ecs.toranoana.jp/joshi/ec/item/040031226566/", 
+            description: "lof站内已有全本汉化。\n",
+            weight: "64g",
+             previewImages: ["https://r2.image-upload.app/ptImg/174A8ESUK.jpg","https://r2.image-upload.app/ptImg/mNvaYSnP.jpg","https://r2.image-upload.app/ptImg/TxdBR94A.jpg","https://r2.image-upload.app/ptImg/10wiISJSu.jpg","https://r2.image-upload.app/ptImg/k53lvW55.jpg","https://r2.image-upload.app/ptImg/hcO7NkIP.jpg","https://r2.image-upload.app/ptImg/ogJsTpxI.jpg","https://r2.image-upload.app/ptImg/UauzzP1I.jpg"],
+            tags: [
+                { text: "fgo", color: "#E0E0E0", textColor: "#424242" },
+                { text: "伯爵咕哒♂", color: "#E1F5FE", textColor: "#0277BD" },
+            ],
+            isPublic: false,
+        },
+        {
+            id: "personal2",
+            cover: "https://r2.image-upload.app/ptImg/1hHIw021u.jpg",
+            title: "もっと兄ちゃんを構いなさいっ!!",
+            lang: "日文",
+            ip: "扭曲仙境",
+            cp: "冥兄弟中心无cp",
+            pageCount: "B5/44P",
+            authorId: "personal_author",
+            authorName: "ストレンジ01/犬丸アカギ",
+            shopUrl: "https://ecs.toranoana.jp/joshi/ec/item/040031180695/",
+            description: "",
+            poipikuUrl: "",
+            poipikuPwd: "",
+            weight: "",
+            previewImages: ["https://r2.image-upload.app/ptImg/1hHIw021u.jpg"],
+            tags:  [{ text: "扭曲仙境", color: "#E8EAF6", textColor: "#283593" },
+                { text: "冥兄弟中心", color: "#90CAF9", textColor: "#1A237E" },
+                { text: "无cp", color: "#EEEEEE", textColor: "#424242" }],
+            isPublic: false,
+            authorIdDisplay: "个人收藏"
+        },
+        {
+            id: "personal3",
+            cover: "https://r2.image-upload.app/ptImg/13dlmZLGh.jpg",
+            title: "再録刀さに１・２巻【再販】",
+            lang: "日文",
+            ip: "刀剑乱舞",
+            cp: "刀审",
+            pageCount: "B5/80P",
+            authorId: "personal_author",
+            authorName: "幸漫",
+            shopUrl: "https://ecs.toranoana.jp/joshi/ec/item/040031127115/",
+            description: "",
+            poipikuUrl: "",
+            poipikuPwd: "",
+            weight: "",
+            previewImages: ["https://r2.image-upload.app/ptImg/13dlmZLGh.jpg"],
+            tags: [
+                { text: "刀剑乱舞", color: "#FFF0F5", textColor: "#D81B60" },
+                { text: "山姥切国广", color: "#FFF9C4", textColor: "#F57F17"  },
+                { text: "三日月宗近", color: "#1565C0", textColor: "#FFEB3B" },
+                { text: "鹤丸国永", color: "#EEEEEE", textColor: "#D4AF37" },
+                { text: "加州清光", color: "#FFEBEE", textColor: "#C62828" }
+            ],
+            isPublic: false,
+            authorIdDisplay: "个人收藏"
+        },
+        {
+            id: "personal4",
+            cover: "https://r2.image-upload.app/ptImg/83iOq2D5.jpg",
+            title: "玉梓の烏",
+            lang: "日文",
+            ip: "刀剑乱舞",
+            cp: "髭膝",
+            pageCount: "B5/64P",
+            authorName:  "ZORRO/わたり沖常",
+            shopUrl: "https://ecs.toranoana.jp/joshi/ec/item/040030630649/",
+            description: "",
+            poipikuUrl: "",
+            poipikuPwd: "",
+            weight: "",
+            previewImages: ["https://r2.image-upload.app/ptImg/83iOq2D5.jpg"],
+            tags: [
+                { text: "刀剑乱舞", color: "#FFF0F5", textColor: "#D81B60" },
+                { text: "髭膝", color: "#424242", textColor: "#FFFFFF" }
+            ],
+            isPublic: false,
+            authorIdDisplay: "个人收藏"
+        }
+    ];
+
+    const allWorksForFilters = [...translatedWorks, ...planWorks, ...personalWorks];
+
+    function checkAndMoveCompletedPlans() {
+        let moved = false;
+        for (let i = planWorks.length - 1; i >= 0; i--) {
+            if (planWorks[i].progress >= 100) {
+                const completedWork = { ...planWorks[i] };
+                delete completedWork.progress;
+                delete completedWork.workRecord;
+                translatedWorks.unshift(completedWork);
+                planWorks.splice(i, 1);
+                moved = true;
+            }
+        }
+        if (moved) {
+            renderAllGalleries();
+        }
+    }
+
+    checkAndMoveCompletedPlans();
+
+    function getWorksByAuthor(authorId, sourceWorks) {
+        return sourceWorks.filter(w => w.authorId === authorId);
+    }
+
+    function getAuthorInfo(authorId, sourceWorks) {
+        const work = sourceWorks.find(w => w.authorId === authorId);
+        if(!work) return null;
+        return {
+            id: authorId,
+            name: work.authorName
+        };
+    }
+
+    function renderTags(tags, clickable = true) {
+        if(!tags || tags.length === 0) return '';
+        return `<div class="tags-container">${tags.map(tag => 
+            `<span class="custom-tag" style="background-color: ${tag.color || '#e8e5dd'}; color: ${tag.textColor || '#555'};" data-tag-text="${escapeHtml(tag.text)}">${escapeHtml(tag.text)}</span>`
+        ).join('')}</div>`;
+    }
+
+    function renderProgressBar(progress) {
+        if (progress === undefined) return '';
+        return `
+            <div class="progress-container">
+                <div class="progress-bar-bg">
+                    <div class="progress-bar-fill" style="width: ${progress}%;"></div>
+                </div>
+                <span class="progress-text">${progress}%</span>
+            </div>
+        `;
+    }
+
+    function renderWorkRecord(workRecord) {
+        if (!workRecord) return '';
+        return `
+            <div class="info-block">
+                <div class="info-block-title">📝 工作记录</div>
+                <div class="work-record-text">${escapeHtml(workRecord)}</div>
+            </div>
+        `;
+    }
+
+    // ========== 新增：渲染可收缩的 Repo 段 ==========
+    function renderRepo(repoData) {
+        if (!repoData) return '';
+        
+        let html = `
+            <div class="repo-collapsible">
+                <div class="repo-header" onclick="toggleRepo(this)">
+                    <span>📋 REPO / 工作记录</span>
+                    <span class="toggle-icon">▼</span>
+                </div>
+                <div class="repo-content">
+        `;
+        
+        // 文字内容
+        if (repoData.text) {
+            html += `<div class="repo-text">${escapeHtml(repoData.text).replace(/\n/g, '<br>')}</div>`;
+        }
+        
+        // 图片内容
+        if (repoData.images && repoData.images.length > 0) {
+            html += `<div class="repo-images">`;
+            repoData.images.forEach(img => {
+                html += `
+                    <div class="repo-img" onclick="openRepoImage('${img.url}')">
+                        <img src="${img.url}" alt="${escapeHtml(img.caption || 'repo图片')}" loading="lazy">
+                        ${img.caption ? `<div class="repo-img-caption">${escapeHtml(img.caption)}</div>` : ''}
+                    </div>
+                `;
+            });
+            html += `</div>`;
+        }
+        
+        html += `
+                </div>
+            </div>
+        `;
+        
+        return html;
+    }
+
+    // 切换收缩状态
+    window.toggleRepo = function(header) {
+        const content = header.nextElementSibling;
+        const icon = header.querySelector('.toggle-icon');
+        content.classList.toggle('open');
+        icon.classList.toggle('open');
+    };
+
+    // 打开大图预览（复用已有的 lightbox）
+    window.openRepoImage = function(imgUrl) {
+        lightboxImg.src = imgUrl;
+        lightbox.classList.add('active');
+    };
+
+    function initCollapsible() {
+        const header = document.getElementById('personalCollapseHeader');
+        const content = document.getElementById('personalCollapseContent');
+        const icon = document.getElementById('personalToggleIcon');
+        if (header && content && icon) {
+            header.addEventListener('click', () => {
+                content.classList.toggle('open');
+                icon.classList.toggle('open');
+            });
+            content.classList.remove('open');
+            icon.classList.remove('open');
+        }
+    }
+
+    function getWorksByTag(tagText) {
+        const translated = translatedWorks.filter(w => 
+            w.tags && w.tags.some(t => t.text === tagText)
+        );
+        const plan = planWorks.filter(w => 
+            w.tags && w.tags.some(t => t.text === tagText)
+        );
+        const personal = personalWorks.filter(w => 
+            w.tags && w.tags.some(t => t.text === tagText)
+        );
+        return { translated, plan, personal };
+    }
+
+    function showTagPage(tagText, tagColor, tagTextColor) {
+        const { translated, plan, personal } = getWorksByTag(tagText);
+        const totalCount = translated.length + plan.length + personal.length;
+        
+        const bgStyle = tagColor ? `background: ${tagColor};` : 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);';
+        const textColorStyle = tagTextColor ? `color: ${tagTextColor};` : 'color: white;';
+        
+        const tagContentDiv = document.getElementById('tagContent');
+        tagContentDiv.innerHTML = `
+            <div class="tag-header" style="${bgStyle}">
+                <div class="tag-header-content">
+                    <div class="tag-name" style="${textColorStyle}"># ${escapeHtml(tagText)}</div>
+                    <div class="tag-count" style="${textColorStyle}">共 ${totalCount} 件作品</div>
+                </div>
+            </div>
+            <div class="section-divider" style="margin-top:0;">
+                <span class="section-title">汉化作品</span>
+                <span class="section-count">共 ${translated.length} 件</span>
+            </div>
+            <div id="tagTranslatedGallery" class="gallery"></div>
+            <div class="section-divider">
+                <span class="section-title">施工中🚧（并不实时更新）</span>
+                <span class="section-count">共 ${plan.length} 件</span>
+            </div>
+            <div id="tagPlanGallery" class="gallery"></div>
+            <div class="section-divider">
+                <span class="section-title">个人同人本阅读收录</span>
+                <span class="section-count">共 ${personal.length} 件</span>
+            </div>
+            <div id="tagPersonalGallery" class="gallery"></div>
+        `;
+        
+        const translatedGallery = document.getElementById('tagTranslatedGallery');
+        if (translated.length === 0) {
+            translatedGallery.innerHTML = '<div class="no-results">暂无作品</div>';
+        } else {
+            translatedGallery.innerHTML = translated.map(w => `
+                <div class="work-card" data-id="${w.id}" data-source="translated">
+                    <img class="cover" src="${w.cover}" loading="lazy" draggable="false">
+                    <div class="card-content">
+                        <div class="work-title">${escapeHtml(w.title)}</div>
+                        <div class="author-name" data-author-id="${w.authorId}" data-source="translated">✎ ${escapeHtml(w.authorName)}</div>
+                        ${renderTags(w.tags, false)}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        const planGallery = document.getElementById('tagPlanGallery');
+        if (plan.length === 0) {
+            planGallery.innerHTML = '<div class="no-results">暂无作品</div>';
+        } else {
+            planGallery.innerHTML = plan.map(w => `
+                <div class="work-card" data-id="${w.id}" data-source="plan">
+                    <img class="cover" src="${w.cover}" loading="lazy" draggable="false">
+                    <div class="card-content">
+                        <div class="work-title">${escapeHtml(w.title)}</div>
+                        <div class="author-name" data-author-id="${w.authorId}" data-source="plan">✎ ${escapeHtml(w.authorName)}</div>
+                        ${renderTags(w.tags, false)}
+                        ${renderProgressBar(w.progress)}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        const personalGallery = document.getElementById('tagPersonalGallery');
+        if (personal.length === 0) {
+            personalGallery.innerHTML = '<div class="no-results">暂无作品</div>';
+        } else {
+            personalGallery.innerHTML = personal.map(w => `
+                <div class="work-card" data-id="${w.id}" data-source="personal">
+                    <img class="cover" src="${w.cover}" loading="lazy" draggable="false">
+                    <div class="card-content">
+                        <div class="work-title">${escapeHtml(w.title)}</div>
+                        <div class="author-name" data-author-id="${w.authorId}" data-source="personal">✎ ${escapeHtml(w.authorName)}</div>
+                        ${renderTags(w.tags, false)}
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        document.querySelectorAll('#tagTranslatedGallery .work-card, #tagPlanGallery .work-card, #tagPersonalGallery .work-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if(e.target.classList.contains('author-name')) return;
+                if(e.target.classList.contains('custom-tag')) return;
+                const id = card.dataset.id;
+                const source = card.dataset.source;
+                showDetail(id, source);
+            });
+        });
+        
+        document.querySelectorAll('#tagTranslatedGallery .author-name, #tagPlanGallery .author-name, #tagPersonalGallery .author-name').forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const authorId = el.dataset.authorId;
+                const source = el.dataset.source;
+                showAuthor(authorId, source);
+            });
+        });
+        
+        document.querySelectorAll('#tagTranslatedGallery .custom-tag, #tagPlanGallery .custom-tag, #tagPersonalGallery .custom-tag').forEach(tag => {
+            tag.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tagText = tag.dataset.tagText;
+                const tagColor = tag.style.backgroundColor;
+                const tagTextColor = tag.style.color;
+                showTagPage(tagText, tagColor, tagTextColor);
+            });
+        });
+        
+        document.getElementById('listView').classList.add('hide');
+        document.getElementById('detailView').classList.remove('active');
+        document.getElementById('authorView').classList.remove('active');
+        document.getElementById('tagView').classList.add('active');
+        window.scrollTo(0, 0);
+    }
+
+    // DOM
+    const listViewEl = document.getElementById('listView');
+    const detailViewEl = document.getElementById('detailView');
+    const authorViewEl = document.getElementById('authorView');
+    const tagViewEl = document.getElementById('tagView');
+    const detailContent = document.getElementById('detailContent');
+    const authorContent = document.getElementById('authorContent');
+    const backToListBtn = document.getElementById('backToListBtn');
+    const backFromAuthorBtn = document.getElementById('backFromAuthorBtn');
+    const backFromTagBtn = document.getElementById('backFromTagBtn');
+    const homeLink = document.getElementById('homeLink');
+    const homeLogo = document.getElementById('homeLogo');
+    const searchInput = document.getElementById('searchInput');
+    const searchType = document.getElementById('searchType');
+    const filterLang = document.getElementById('filterLang');
+    const filterIP = document.getElementById('filterIP');
+    const filterCP = document.getElementById('filterCP');
+    const resetBtn = document.getElementById('resetBtn');
+    const translatedGallery = document.getElementById('translatedGallery');
+    const planGallery = document.getElementById('planGallery');
+    const personalGallery = document.getElementById('personalGallery');
+    const translatedCountSpan = document.getElementById('translatedCount');
+    const planCountSpan = document.getElementById('planCount');
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxClose = document.getElementById('lightboxClose');
+
+    let currentPreviewImages = [];
+
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, m => m==='&'?'&amp;':m==='<'?'&lt;':'&gt;'); }
+
+    function getUnique(f) { return [...new Set(allWorksForFilters.map(w=>w[f]).filter(v=>v))]; }
+
+    function populateFilters() {
+        filterLang.innerHTML = '<option value="all">全部</option>' + getUnique('lang').map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+        filterIP.innerHTML = '<option value="all">全部</option>' + getUnique('ip').map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+        filterCP.innerHTML = '<option value="all">全部</option>' + getUnique('cp').map(v=>`<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+    }
+
+    function matchesFilters(work, lang, ip, cpFilter) {
+        if (lang !== 'all' && work.lang !== lang) return false;
+        if (ip !== 'all' && work.ip !== ip) return false;
+        if (cpFilter !== 'all' && work.cp !== cpFilter) return false;
+        return true;
+    }
+
+    function matchesSearch(work, searchTerm, searchTypeVal) {
+        if (!searchTerm) return true;
+        const term = searchTerm.toLowerCase();
+        switch(searchTypeVal) {
+            case 'title': return work.title.toLowerCase().includes(term);
+            case 'cp': return work.cp.toLowerCase().includes(term);
+            case 'author': return work.authorName.toLowerCase().includes(term);
+            case 'ip': return work.ip ? work.ip.toLowerCase().includes(term) : false;
+            default: return work.title.toLowerCase().includes(term);
+        }
+    }
+
+   function renderAllGalleries() {
+    const searchTerm = searchInput.value.trim();
+    const searchTypeVal = searchType.value;
+    const lang = filterLang.value;
+    const ip = filterIP.value;
+    const cpFilter = filterCP.value;
+
+    // 第一类：汉化作品（受搜索+筛选影响）
+    const filteredTranslated = translatedWorks.filter(w => {
+        if (!matchesFilters(w, lang, ip, cpFilter)) return false;
+        if (!matchesSearch(w, searchTerm, searchTypeVal)) return false;
+        return true;
+    });
+    renderGallery(translatedGallery, filteredTranslated, 'translated');
+    translatedCountSpan.innerText = `共 ${filteredTranslated.length} 件`;
+
+    // 第二类：施工中（只受筛选影响，不受搜索影响）
+    const filteredPlan = planWorks.filter(w => {
+        if (!matchesFilters(w, lang, ip, cpFilter)) return false;
+        return true;
+    });
+    renderGallery(planGallery, filteredPlan, 'plan');
+    planCountSpan.innerText = `共 ${filteredPlan.length} 件`;
+
+    // 第三类：个人同人本阅读收录（只受筛选影响，不受搜索影响）
+    const filteredPersonal = personalWorks.filter(w => {
+        if (!matchesFilters(w, lang, ip, cpFilter)) return false;
+        return true;
+    });
+    renderGallery(personalGallery, filteredPersonal, 'personal');
+}
+
+    function renderGallery(container, worksList, source) {
+        if(!container) return;
+        if(!worksList.length) { 
+            container.innerHTML = '<div class="no-results">暂无作品</div>'; 
+            return; 
+        }
+        container.innerHTML = worksList.map(w => `
+            <div class="work-card" data-id="${w.id}" data-source="${source}">
+                <img class="cover" src="${w.cover}" loading="lazy" draggable="false">
+                <div class="card-content">
+                    <div class="work-title">${escapeHtml(w.title)}</div>
+                    <div class="author-name" data-author-id="${w.authorId}" data-source="${source}">✎ ${escapeHtml(w.authorName)}</div>
+                    ${renderTags(w.tags, true)}
+                    ${source === 'plan' ? renderProgressBar(w.progress) : ''}
+                </div>
+            </div>
+        `).join('');
+        
+        document.querySelectorAll(`#${container.id} .work-card`).forEach(c => {
+            c.addEventListener('click', (e) => {
+                if(e.target.classList.contains('author-name')) return;
+                if(e.target.classList.contains('custom-tag')) return;
+                const id = c.dataset.id;
+                const src = c.dataset.source;
+                showDetail(id, src);
+            });
+        });
+        
+        document.querySelectorAll(`#${container.id} .author-name`).forEach(el => {
+            el.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const authorId = el.dataset.authorId;
+                const src = el.dataset.source;
+                showAuthor(authorId, src);
+            });
+        });
+        
+        document.querySelectorAll(`#${container.id} .custom-tag`).forEach(tag => {
+            tag.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tagText = tag.dataset.tagText;
+                const tagColor = tag.style.backgroundColor;
+                const tagTextColor = tag.style.color;
+                showTagPage(tagText, tagColor, tagTextColor);
+            });
+        });
+    }
+
+    function showAuthor(authorId, source) {
+        let sourceWorks;
+        if (source === 'translated') sourceWorks = translatedWorks;
+        else if (source === 'plan') sourceWorks = planWorks;
+        else sourceWorks = personalWorks;
+        
+        const authorWorks = getWorksByAuthor(authorId, sourceWorks);
+        const authorInfo = getAuthorInfo(authorId, sourceWorks);
+        if(!authorInfo) return;
+
+        authorContent.innerHTML = `
+            <div class="author-header">
+                <h2>${escapeHtml(authorInfo.name)}</h2>
+                <p>共 ${authorWorks.length} 作品</p>
+            </div>
+            <div class="author-works-title">▼ 作品一览</div>
+            <div class="author-gallery" id="authorGallery"></div>
+        `;
+
+        const authorGallery = document.getElementById('authorGallery');
+        authorGallery.innerHTML = authorWorks.map(w => `
+            <div class="work-card" data-id="${w.id}" data-source="${source}" style="cursor:pointer;">
+                <img class="cover" src="${w.cover}" loading="lazy" draggable="false">
+                <div class="card-content">
+                    <div class="work-title">${escapeHtml(w.title)}</div>
+                    ${renderTags(w.tags, true)}
+                    ${source === 'plan' ? renderProgressBar(w.progress) : ''}
+                </div>
+            </div>
+        `).join('');
+
+        document.querySelectorAll('#authorGallery .work-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const id = card.dataset.id;
+                const src = card.dataset.source;
+                showDetail(id, src);
+            });
+        });
+        
+        document.querySelectorAll('#authorGallery .custom-tag').forEach(tag => {
+            tag.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tagText = tag.dataset.tagText;
+                const tagColor = tag.style.backgroundColor;
+                const tagTextColor = tag.style.color;
+                showTagPage(tagText, tagColor, tagTextColor);
+            });
+        });
+
+        listViewEl.classList.add('hide');
+        detailViewEl.classList.remove('active');
+        tagViewEl.classList.remove('active');
+        authorViewEl.classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function showDetail(id, source) {
+        let sourceWorks;
+        if (source === 'translated') sourceWorks = translatedWorks;
+        else if (source === 'plan') sourceWorks = planWorks;
+        else sourceWorks = personalWorks;
+        
+        const w = sourceWorks.find(x => x.id === id);
+        if(!w) return;
+
+        const mainImage = w.previewImages?.[0] || w.cover;
+        const thumbImages = w.previewImages || [w.cover];
+
+        let thumbHtml = '';
+        thumbImages.forEach((img, idx) => {
+            thumbHtml += `<div class="thumb-item" data-img-index="${idx}"><img src="${img}" draggable="false"></div>`;
+        });
+
+        const publicStatusHtml = w.isPublic 
+            ? '<span class="public-badge">✓ 公开</span>' 
+            : '<span class="private-badge">✗ 非公开</span>';
+
+        const authorIdHtml = w.isPublic && w.authorIdDisplay
+            ? `<div class="info-row"><span class="info-label">作者ID</span><span class="info-value">${escapeHtml(w.authorIdDisplay)}</span></div>`
+            : '';
+
+        let poipikuHtml = '';
+        if (source === 'translated' && w.poipikuUrl) {
+            poipikuHtml = `
+                <div class="poipiku-section">
+                    <div class="poipiku-pwd">🔐 Poipiku 密码：<strong>${escapeHtml(w.poipikuPwd)}</strong></div>
+                    <a href="${w.poipikuUrl}" class="poipiku-btn-large" target="_blank" rel="noopener noreferrer">🌸 前往 Poipiku</a>
+                </div>
+            `;
+        }
+
+        let progressHtml = '';
+        if (source === 'plan' && w.progress !== undefined) {
+            progressHtml = `
+                <div class="info-block">
+                    <div class="info-block-title">📊 汉化进度</div>
+                    <div class="progress-container" style="margin-top:8px;">
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" style="width: ${w.progress}%;"></div>
+                        </div>
+                        <span class="progress-text">${w.progress}%</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        let workRecordHtml = '';
+        if (source === 'plan' && w.workRecord) {
+            workRecordHtml = renderWorkRecord(w.workRecord);
+        }
+
+        // 渲染 Repo 段
+        const repoHtml = renderRepo(w.repo);
+
+        detailContent.innerHTML = `
+            <div class="detail-layout">
+                <div class="detail-left">
+                    <div class="main-image" id="detailMainImage">
+                        <img src="${mainImage}" alt="${escapeHtml(w.title)}" draggable="false">
+                    </div>
+                    <div class="thumb-list" id="thumbList">${thumbHtml}</div>
+                </div>
+                <div class="detail-right">
+                    <h1 class="detail-title">${escapeHtml(w.title)}</h1>
+                    
+                    ${poipikuHtml}
+
+                   <div class="detail-author-link">
+    ✎ 社团/作者：<a id="authorLinkInDetail" data-author-id="${w.authorId}" data-source="${source}">${escapeHtml(w.authorName)}</a>
+    <span style="margin-left: 20px;">
+        🛒 通贩：
+        ${w.shopUrl && w.shopUrl !== '' 
+            ? `<a href="${w.shopUrl}" target="_blank" rel="noopener noreferrer" style="color: #4a6a5e; text-decoration: none; border-bottom: 1px solid #ddd8cf;">点击跳转</a>` 
+            : `<span style="color: #aaa;">暂无</span>`
+        }
+    </span>
+</div>
+
+                    <div class="info-block">
+                        <div class="info-block-title">作品详细</div>
+                        <div class="info-grid">
+                            <div class="info-row"><span class="info-label">语言</span><span class="info-value">${escapeHtml(w.lang)}</span></div>
+                            <div class="info-row"><span class="info-label">作品IP</span><span class="info-value">${escapeHtml(w.ip)}</span></div>
+                            <div class="info-row"><span class="info-label">CP</span><span class="info-value">${escapeHtml(w.cp)}</span></div>
+                           <div class="info-row"><span class="info-label">尺寸｜页数</span><span class="info-value">${w.size ? `${escapeHtml(w.size)} ／ ${escapeHtml(w.pageCount)}` : escapeHtml(w.pageCount)}</span></div>
+                            <div class="info-row"><span class="info-label">重量</span><span class="info-value">${escapeHtml(w.weight)}</span></div>
+                            <div class="info-row"><span class="info-label">公开状态</span><span class="info-value">${publicStatusHtml}</span></div>
+                            ${authorIdHtml}
+                        </div>
+                    </div>
+
+                    <div class="info-block">
+                        <div class="info-block-title">作品介绍</div>
+                        <div class="description-text">${escapeHtml(w.description)}</div>
+                    </div>
+
+                    ${progressHtml}
+                    ${workRecordHtml}
+
+                    ${repoHtml}
+
+                    <hr>
+                    <div class="footer-note">⚠️ 禁止转载・禁止商用</div>
+                </div>
+            </div>
+        `;
+
+        document.querySelectorAll('.detail-right .custom-tag').forEach(tag => {
+            tag.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const tagText = tag.dataset.tagText;
+                const tagColor = tag.style.backgroundColor;
+                const tagTextColor = tag.style.color;
+                showTagPage(tagText, tagColor, tagTextColor);
+            });
+        });
+
+        const authorLink = document.getElementById('authorLinkInDetail');
+        if(authorLink) {
+            const authId = authorLink.dataset.authorId;
+            const src = authorLink.dataset.source;
+            authorLink.addEventListener('click', () => showAuthor(authId, src));
+        }
+
+        const mainImgContainer = document.getElementById('detailMainImage');
+        const thumbItems = document.querySelectorAll('.thumb-item');
+        thumbItems.forEach((item, idx) => {
+            item.addEventListener('click', () => {
+                const newSrc = thumbImages[idx];
+                mainImgContainer.innerHTML = `<img src="${newSrc}" alt="${escapeHtml(w.title)}" draggable="false">`;
+                thumbItems.forEach(t => t.classList.remove('active'));
+                item.classList.add('active');
+                const newMainImg = mainImgContainer.querySelector('img');
+                newMainImg.addEventListener('click', () => {
+                    currentPreviewImages = thumbImages;
+                    lightboxImg.src = newSrc;
+                    lightbox.classList.add('active');
+                });
+            });
+            if(idx === 0) item.classList.add('active');
+        });
+
+        const mainImg = mainImgContainer.querySelector('img');
+        if(mainImg) {
+            mainImg.addEventListener('click', () => {
+                currentPreviewImages = thumbImages;
+                lightboxImg.src = mainImage;
+                lightbox.classList.add('active');
+            });
+        }
+
+        listViewEl.classList.add('hide');
+        authorViewEl.classList.remove('active');
+        tagViewEl.classList.remove('active');
+        detailViewEl.classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    function showList() {
+        checkAndMoveCompletedPlans();
+        listViewEl.classList.remove('hide');
+        detailViewEl.classList.remove('active');
+        authorViewEl.classList.remove('active');
+        tagViewEl.classList.remove('active');
+        renderAllGalleries();
+    }
+
+    lightboxClose.addEventListener('click', () => lightbox.classList.remove('active'));
+    lightbox.addEventListener('click', (e) => { if(e.target === lightbox) lightbox.classList.remove('active'); });
+
+    searchInput.addEventListener('input', renderAllGalleries);
+    searchType.addEventListener('change', renderAllGalleries);
+    filterLang.addEventListener('change', renderAllGalleries);
+    filterIP.addEventListener('change', renderAllGalleries);
+    filterCP.addEventListener('change', renderAllGalleries);
+    resetBtn.addEventListener('click', () => { 
+        searchInput.value = ''; 
+        searchType.value = 'title';
+        filterLang.value = 'all'; 
+        filterIP.value = 'all'; 
+        filterCP.value = 'all'; 
+        renderAllGalleries(); 
+    });
+    backToListBtn.addEventListener('click', showList);
+    backFromAuthorBtn.addEventListener('click', showList);
+    backFromTagBtn.addEventListener('click', showList);
+    homeLink.addEventListener('click', (e) => { e.preventDefault(); showList(); });
+    homeLogo.addEventListener('click', () => showList());
+
+    populateFilters();
+    renderAllGalleries();
+    initCollapsible();
+</script>
+</body>
+</html>
