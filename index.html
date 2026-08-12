@@ -1041,7 +1041,7 @@
                "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre02.jpg",
                "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre03.jpg",
                "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre04.jpg",
-               "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre05.jpg"],
+               "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre05.jpg",],
             tags: [
                 { text: "fgo", color: "#E0E0E0", textColor: "#424242" },
                 { text: "伯爵咕哒♀", color: "#FFE0B2", textColor: "#EF6C00" },
@@ -1068,13 +1068,13 @@
             poipikuUrl: "https://poipiku.com/8968386/13057792.html",
             poipikuPwd: "倒数第6p作者二维码下方汉字的拼音",
             weight: "93g",
-            previewImages: ["https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_cover.JPG",
-                           "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre01.jpg",
-                            "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre02.jpg",
-                            "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre03.jpg",
-                            "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre04.jpg",
-                             "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre05.jpg",
-                            "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H001_pre06.jpg"
+            previewImages: ["https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H002_cover.JPG",
+                           "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H002_pre01.jpg",
+                            "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H002_pre02.jpg",
+                            "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H002_pre03.jpg",
+                            "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H002_pre04.jpg",
+                             "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H002_pre05.jpg",
+                            "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H002_pre06.jpg"
                            ],
             tags: [
                 { text: "扭曲仙境", color: "#E8EAF6", textColor: "#283593" },
@@ -1374,6 +1374,7 @@
     {
           id: "plan12",
             cover: "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H012_cover.jpg",
+            isSquare: true, 
             title: "ひととかたなとせつなのはなし",
             lang: "日文",
             ip: "刀剑乱舞",
@@ -1397,6 +1398,7 @@
     {
           id: "plan13",
             cover: "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H013_cover.jpg",
+            isSquare: true, 
             title: "ひととかたなとせつなのはなし 下巻",
             lang: "日文",
             ip: "刀剑乱舞",
@@ -1421,6 +1423,7 @@
          {
           id: "plan14",
             cover: "https://raw.githubusercontent.com/Persephone-6/hanhua/main/images/H014_cover.jpg",
+            isSquare: true, 
             title: "あなたが呼べばわたしの名すら恋になる",
             lang: "日文",
             ip: "刀剑乱舞",
@@ -1923,54 +1926,72 @@ document.querySelectorAll('#tagTranslatedGallery .author-name, #tagPlanGallery .
     renderGallery(personalGallery, filteredPersonal, 'personal');
 }
 
-    function renderGallery(container, worksList, source) {
-        if(!container) return;
-        if(!worksList.length) { 
-            container.innerHTML = '<div class="no-results">暂无作品</div>'; 
-            return; 
-        }
-        container.innerHTML = worksList.map(w => `
-            <div class="work-card" data-id="${w.id}" data-source="${source}">
-                <img class="cover" src="${w.cover}" loading="lazy" draggable="false">
-                <div class="card-content">
-                    <div class="work-title">${escapeHtml(w.title)}</div>
-                    <div class="author-name" data-author-id="${w.authorId}" data-source="${source}">✎ ${escapeHtml(w.authorName)}</div>
-                    ${renderTags(w.tags, true)}
-                    ${source === 'plan' ? renderProgressBar(w.progress) : ''}
-                </div>
-            </div>
-        `).join('');
-        
-        document.querySelectorAll(`#${container.id} .work-card`).forEach(c => {
-            c.addEventListener('click', (e) => {
-                if(e.target.classList.contains('author-name')) return;
-                if(e.target.classList.contains('custom-tag')) return;
-                const id = c.dataset.id;
-                const src = c.dataset.source;
-                showDetail(id, src);
-            });
-        });
-        
-  document.querySelectorAll(`#${container.id} .author-name`).forEach(el => {
-    el.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const authorId = el.dataset.authorId;
-        showAuthor(authorId);
-    });
-});
-        
-        document.querySelectorAll(`#${container.id} .custom-tag`).forEach(tag => {
-            tag.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const tagText = tag.dataset.tagText;
-                const tagColor = tag.style.backgroundColor;
-                const tagTextColor = tag.style.color;
-                showTagPage(tagText, tagColor, tagTextColor);
-            });
-        });
+function renderGallery(container, worksList, source) {
+    if(!container) return;
+    if(!worksList.length) { 
+        container.innerHTML = '<div class="no-results">暂无作品</div>'; 
+        return; 
     }
+    container.innerHTML = worksList.map(w => `
+        <div class="work-card" data-id="${w.id}" data-source="${source}">
+            <img class="cover" src="${w.cover}" loading="lazy" draggable="false" data-cover-id="${w.id}" data-is-square="${w.isSquare ? 'true' : 'false'}">
+            <div class="card-content">
+                <div class="work-title">${escapeHtml(w.title)}</div>
+                <div class="author-name" data-author-id="${w.authorId}" onclick="showAuthor(this.dataset.authorId); return false;">✎ ${escapeHtml(w.authorName)}</div>
+                ${renderTags(w.tags, true)}
+                ${source === 'plan' ? renderProgressBar(w.progress) : ''}
+            </div>
+        </div>
+    `).join('');
+    
+    // 绑定卡片点击事件
+    document.querySelectorAll(`#${container.id} .work-card`).forEach(c => {
+        c.addEventListener('click', (e) => {
+            if(e.target.classList.contains('author-name')) return;
+            if(e.target.classList.contains('custom-tag')) return;
+            const id = c.dataset.id;
+            const src = c.dataset.source;
+            showDetail(id, src);
+        });
+    });
+    
+    // 绑定作者名点击事件
+    document.querySelectorAll(`#${container.id} .author-name`).forEach(el => {
+        el.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const authorId = el.dataset.authorId;
+            showAuthor(authorId);
+        });
+    });
+    
+    // 绑定标签点击事件
+    document.querySelectorAll(`#${container.id} .custom-tag`).forEach(tag => {
+        tag.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const tagText = tag.dataset.tagText;
+            const tagColor = tag.style.backgroundColor;
+            const tagTextColor = tag.style.color;
+            showTagPage(tagText, tagColor, tagTextColor);
+        });
+    });
+    
+    // 手动标记方案：只有标记了 isSquare: true 的图才用 contain
+    document.querySelectorAll(`#${container.id} .cover`).forEach(img => {
+        setCoverStyle(img);
+    });
+}
+    
 
-// ========== 辅助函数：根据作品ID查找所属分类 ==========
+
+// ========== 根据图片比例自动设置样式 ==========
+function setCoverStyle(img) {
+    // 只有手动标记了 isSquare: true 的图才用 contain（居中完整显示）
+    if (img.dataset.isSquare === 'true') {
+        img.style.objectFit = 'contain';
+    } else {
+        img.style.objectFit = 'cover';
+    }
+}// ========== 辅助函数：根据作品ID查找所属分类 ==========
 function getWorkSource(workId) {
     if (translatedWorks.some(w => w.id === workId)) return 'translated';
     if (planWorks.some(w => w.id === workId)) return 'plan';
